@@ -1,0 +1,44 @@
+---
+title: Process Drugs
+subtitle: Ayush Noori, Sibi Raja, Jay Iyer
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+# Dependencies
+
+Load requisite packages and define directories. Note that this script may also use my personal utilities package `brainstorm`, which can be downloaded via `devtools::install_github("ayushnoori/brainstorm")`.
+
+```{r load-packages, message=FALSE, warning=FALSE}
+# data manipulation
+library(data.table)
+library(purrr)
+library(magrittr)
+
+# relative file paths
+library(here)
+
+# data visualization
+library(ggplot2)
+
+# utility functions
+# devtools::install_github("ayushnoori/brainstorm")
+library(brainstorm)
+```
+
+Note that directories are relative to the R project path.
+
+```{r define-directores}
+# set directories
+data_dir = here("Data")
+```
+
+# Load Data
+
+```{r load-data}
+drug_data = fread(here(data_dir, "drugage.csv"))
+```
