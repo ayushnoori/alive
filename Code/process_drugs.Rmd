@@ -25,6 +25,9 @@ library(here)
 # Data visualization
 library(ggplot2)
 
+# URL retrieval
+library(httr)
+
 # Utility functions
 # devtools::install_github("ayushnoori/brainstorm")
 library(brainstorm)
@@ -41,15 +44,47 @@ data_dir = here("Data")
 
 ```{r load-data}
 # Read data
-drug_data = fread(here(data_dir, "drugage.csv")) %>%
-  .[, c("V11", "V12") := NULL]
+drug_data = fread(here(data_dir, "drug_age.csv")) %>%
+  .[, c("V11", "V12") := NULL] %>%
+  unique()
 message("Drugs: ", length(unique(drug_data$compound_name)))
 
 # Filter out NA drugs
+drug_data[drug_data == ""] = NA
 drug_data = drug_data[!is.na(avg_lifespan_change)]
 message("Remaining drugs: ", length(unique(drug_data$compound_name)))
 message("Model organisms: ", length(unique(drug_data$species)))
+
+# Write to file
 ```
 
 Next, merge to get chemical structures.
 
+```{r merge-data}
+# # Merge with drug mappings
+# drug_mappings = fread(here(data_dir, "drug_mappings.tsv")) %>%
+#   .[, .(cas_num, drugbankId)] %>%
+#   .[!(cas_num == "null")]
+# drug_data = merge(drug_data, drug_mappings, all.x = T, all.y = F, by.x = "cas_number", by.y = "cas_num", sort = F)
+
+# Add SMILES structures
+cas_smiles = data.table(cas_number = unique(drug_data$cas_number))
+
+# Define function
+get_smiles = function(cas_number) {
+  if (is.na(cas_number)) {
+    return(NA)
+  } else {
+    smiles_url = paste0("http://cactus.nci.nih.gov/chemical/structure/", cas_number, "/smiles")
+    smiles = content(GET(smiles_url))
+    if(is.character(tmp)) {
+      return(smiles)
+    } else{
+      return(NA)
+    }
+  }
+}
+
+# Map over inputs
+cas_smiles[, smiles := map_chr(cas_number, get_smiles)]
+```
