@@ -51,7 +51,9 @@ message("Drugs: ", length(unique(drug_data$compound_name)))
 
 # Filter out NA drugs
 drug_data[drug_data == ""] = NA
-drug_data = drug_data[!is.na(avg_lifespan_change)]
+drug_data = drug_data %>%
+  .[!is.na(avg_lifespan_change)] %>%
+  .[, gender := stringr::str_to_lower(gender)]
 message("Remaining drugs: ", length(unique(drug_data$compound_name)))
 message("Model organisms: ", length(unique(drug_data$species)))
 
