@@ -6,7 +6,7 @@ editor_options:
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(eval = FALSE)
+# knitr::opts_chunk$set(eval = FALSE)
 ```
 
 # Dependencies
@@ -14,18 +14,21 @@ knitr::opts_chunk$set(eval = FALSE)
 Load requisite packages and define directories. Note that this script may also use my personal utilities package `brainstorm`, which can be downloaded via `devtools::install_github("ayushnoori/brainstorm")`.
 
 ```{r load-packages, message=FALSE, warning=FALSE}
-# data manipulation
+# Data manipulation
 library(data.table)
 library(purrr)
 library(magrittr)
 
-# relative file paths
+# Relative file paths
 library(here)
 
-# data visualization
+# Data visualization
 library(ggplot2)
 
-# utility functions
+# URL retrieval
+library(httr)
+
+# Utility functions
 # devtools::install_github("ayushnoori/brainstorm")
 library(brainstorm)
 ```
@@ -33,12 +36,63 @@ library(brainstorm)
 Note that directories are relative to the R project path.
 
 ```{r define-directores}
-# set directories
+# Set directories
 data_dir = here("Data")
 ```
 
 # Load Data
 
 ```{r load-data}
-drug_data = fread(here(data_dir, "drugage.csv"))
+# Read data
+drug_data = fread(here(data_dir, "drug_age.csv")) %>%
+  .[, c("V11", "V12") := NULL] %>%
+  unique()
+message("Drugs: ", length(unique(drug_data$compound_name)))
+
+# Filter out NA drugs
+drug_data[drug_data == ""] = NA
+drug_data = drug_data %>%
+  .[!is.na(avg_lifespan_change)] %>%
+  .[, gender := stringr::str_to_lower(gender)]
+message("Remaining drugs: ", length(unique(drug_data$compound_name)))
+message("Model organisms: ", length(unique(drug_data$species)))
+
+# Write to file
+fwrite(drug_data, here(data_dir, "drug_age_processed.csv"))
+```
+
+Next, merge to get chemical structures.
+
+```{r merge-data}
+# # Merge with drug mappings
+# drug_mappings = fread(here(data_dir, "drug_mappings.tsv")) %>%
+#   .[, .(cas_num, drugbankId)] %>%
+#   .[!(cas_num == "null")]
+# drug_data = merge(drug_data, drug_mappings, all.x = T, all.y = F, by.x = "cas_number", by.y = "cas_num", sort = F)
+
+# Add SMILES structures
+cas_smiles = data.table(cas_number = unique(drug_data$cas_number))
+
+# Define function
+get_smiles = function(cas_number, mol_index) {
+  
+  if(mol_index %% 10 == 0) {
+    cat(paste0(mol_index, ", "))
+  }
+  
+  if (is.na(cas_number)) {
+    return(NA)
+  } else {
+    smiles_url = paste0("http://cactus.nci.nih.gov/chemical/structure/", cas_number, "/smiles")
+    smiles = content(GET(smiles_url))
+    if(is.character(smiles)) {
+      return(smiles)
+    } else{
+      return(NA)
+    }
+  }
+}
+
+# Map over inputs
+cas_smiles[, smiles := imap_chr(cas_number, get_smiles)]
 ```

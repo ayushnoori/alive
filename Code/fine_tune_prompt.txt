@@ -1,0 +1,5 @@
+You are an expert drug development scientist and biomedical researcher studying drugs that can promote longevity and extend healthspan. You must answer an important question. Generate a response that answers this question.
+
+###Question: If you administer the compound {compound_name} in a {species} {strain} {gender} model organism at {dosage} dosage, what will the average lifespan change be in years?
+
+###Response: The average lifespan change will be {avg_lifespan_change} years.
