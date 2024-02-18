@@ -41,7 +41,18 @@ In the future, we intend to use a deep learning model trained by jointly learnin
 
 ## Base Dependencies 📦 
 
-TBD
+Please see `requirements.txt`, or below.
+
+```
+streamlit
+pandas
+numpy
+streamlit-authenticator
+transformers
+torch
+monsterapi==1.0.2b3
+load_dotenv
+```
 
 ## Development Team 🧑‍💻
 * [Ayush Noori](mailto:anoori@college.harvard.edu)
