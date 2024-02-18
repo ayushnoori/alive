@@ -7,10 +7,13 @@ ALIVE is an artificial intelligence-based recommendation system for longevity su
 Built for [TreeHacks 2024](https://www.treehacks.com/) at Stanford University.
 
 ## Problem Statement 💡
-Japan faces a unique and pressing challenge: it is home to one of the world's fastest-aging populations. According to projections, the proportion of the population aged 65 and over is expected to rise significantly, leading to increased healthcare costs, a shrinking workforce, and a greater demand for elderly care services. Among the various health concerns this demographic faces, nutritional deficiencies stand out as a critical issue. As people age, their nutritional requirements change, and the risk of developing deficiencies in essential vitamins and minerals increases, which can significantly impact their quality of life and increase the burden on healthcare systems.
+Japan faces a unique and pressing challenge: it is home to one of the world's fastest-aging populations. According to projections, the proportion of the population aged 65 and over is expected to rise significantly, leading to increased healthcare costs, a shrinking workforce, and a greater demand for elderly care services. As this population ages, they may face a decline in healthspan—the period of life free from serious disease and impairment. Far too often, the elderly experience a decline in physical and cognitive function, leading to a lower quality of life and increased reliance on medical interventions.
 
-Recognizing this issue, our team has developed an innovative solution to address the dietary and nutritional challenges faced by older adults in Japan. Our product leverages the power of a fine-tuned large language model (LLM) to provide personalized supplementation recommendations. This AI-driven approach is designed to understand the unique nutritional needs and preferences of older adults, taking into account factors such as age, gender, dietary restrictions, existing health conditions, and lifestyle.
+## Solution 💊
 
+ALIVE offers a proactive approach to addressing the challenges of aging by leveraging artificial intelligence and personalized medicine. By analyzing individuals' biological profiles, including genetic data, biomarkers, and lifestyle factors, ALIVE generates tailored recommendations for longevity supplementation and drug repurposing. These recommendations aim to optimize individuals' healthspan by targeting specific pathways associated with aging, such as inflammation, oxidative stress, and mitochondrial function.
+
+Through its user-friendly interface, ALIVE empowers individuals to take control of their healthspan journey. Users receive personalized recommendations that align with their unique biological needs and preferences, allowing them to make informed decisions about their supplementation and medication regimen. By proactively addressing age-related health concerns, ALIVE helps individuals maintain vitality, independence, and overall well-being as they age.
 
 ## Large Language Model ✨
 
