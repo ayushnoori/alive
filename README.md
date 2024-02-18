@@ -9,8 +9,7 @@ Built for [TreeHacks 2024](https://www.treehacks.com/) at Stanford University.
 ## Problem Statement 💡
 Japan faces a unique and pressing challenge: it is home to one of the world's fastest-aging populations. According to projections, the proportion of the population aged 65 and over is expected to rise significantly, leading to increased healthcare costs, a shrinking workforce, and a greater demand for elderly care services. Among the various health concerns this demographic faces, nutritional deficiencies stand out as a critical issue. As people age, their nutritional requirements change, and the risk of developing deficiencies in essential vitamins and minerals increases, which can significantly impact their quality of life and increase the burden on healthcare systems.
 
-Recognizing this issue, our team has developed an innovative solution to address the dietary and nutritional challenges faced by older adults in Japan. Our product leverages the power of a fine-tuned Language Model (LLM) to provide personalized supplementation recommendations. This AI-driven approach is designed to understand the unique nutritional needs and preferences of older adults, taking into account factors such as age, gender, dietary restrictions, existing health conditions, and lifestyle.
-
+Recognizing this issue, our team has developed an innovative solution to address the dietary and nutritional challenges faced by older adults in Japan. Our product leverages the power of a fine-tuned large language model (LLM) to provide personalized supplementation recommendations. This AI-driven approach is designed to understand the unique nutritional needs and preferences of older adults, taking into account factors such as age, gender, dietary restrictions, existing health conditions, and lifestyle.
 
 
 ## Large Language Model ✨
