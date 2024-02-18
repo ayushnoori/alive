@@ -6,7 +6,7 @@ editor_options:
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(eval = FALSE)
+# knitr::opts_chunk$set(eval = FALSE)
 ```
 
 # Dependencies
@@ -74,13 +74,18 @@ Next, merge to get chemical structures.
 cas_smiles = data.table(cas_number = unique(drug_data$cas_number))
 
 # Define function
-get_smiles = function(cas_number) {
+get_smiles = function(cas_number, mol_index) {
+  
+  if(mol_index %% 10 == 0) {
+    cat(paste0(mol_index, ", "))
+  }
+  
   if (is.na(cas_number)) {
     return(NA)
   } else {
     smiles_url = paste0("http://cactus.nci.nih.gov/chemical/structure/", cas_number, "/smiles")
     smiles = content(GET(smiles_url))
-    if(is.character(tmp)) {
+    if(is.character(smiles)) {
       return(smiles)
     } else{
       return(NA)
@@ -89,5 +94,5 @@ get_smiles = function(cas_number) {
 }
 
 # Map over inputs
-cas_smiles[, smiles := map_chr(cas_number, get_smiles)]
+cas_smiles[, smiles := imap_chr(cas_number, get_smiles)]
 ```
