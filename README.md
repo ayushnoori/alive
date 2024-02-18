@@ -17,7 +17,7 @@ Through its user-friendly interface, ALIVE empowers individuals to take control 
 
 ## Large Language Model ✨
 
-The large language model (LLM) that underlies ALIVE was initialized from [meta-llama/Llama-2-7b-chat-hf](https://huggingface.co/meta-llama/Llama-2-7b-chat-hf) and was fine-tuned using [Monster API](https://monsterapi.ai/) on the filtered [DrugAge database](https://genomics.senescence.info/drugs/), a database of aging related drugs. We used the following prompt for fine-tuning:
+The large language model (LLM) that underlies ALIVE was initialized from [meta-llama/Llama-2-7b-chat-hf](https://huggingface.co/meta-llama/Llama-2-7b-chat-hf) and was fine-tuned using [Monster API](https://monsterapi.ai/) on the filtered [DrugAge database](https://genomics.senescence.info/drugs/), a database of aging-related drugs. We used the following prompt for fine-tuning:
 
 ```
 You are an expert drug development scientist and biomedical researcher studying drugs that can promote longevity and extend healthspan. You must answer an important question. Generate a response that answers this question.
