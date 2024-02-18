@@ -2,12 +2,12 @@
 
 ## Summary
 
-ALIVE is an artificial intelligence-based recommendation system for longevity supplementation and drug repurposing. Based on your unique biological profile, ALIVE will recommend a personalized regimen of supplements and drugs to optimize your healthspan. ALIVE places control over your healthspan into your own hands.
+ALIVE is an artificial intelligence-based recommendation system for longevity supplementation and drug repurposing. Based on your unique biological profile, ALIVE will recommend a personalized regimen of supplements and drugs to optimize your healthspan. ALIVE places control over your healthspan into your own hands. 
 
 Built for [TreeHacks 2024](https://www.treehacks.com/) at Stanford University.
 
 ## Problem Statement 💡
-
+As we turn to the future, aging is one of the most pressing challenges facing healthcare systems today. This effect is especially seen in Japan, where one in 10 people are now aged 80 years of age or older. 
 
 
 ## Large Language Model ✨
