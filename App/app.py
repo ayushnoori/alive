@@ -1,5 +1,21 @@
 import streamlit as st
 import sqlite3
+# from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, AutoModelWithHeads
+from transformers import AutoTokenizer, AutoModelForCausalLM
+import os
+from dotenv import load_dotenv
+from monsterapi import client as mclient
+import json
+
+# get monster api key
+load_dotenv()
+api_key = os.getenv('API_KEY')
+# print(api_key)
+
+deploy_client = mclient(api_key = api_key)
+status_ret = deploy_client.get_deployment_status("ac86ae4b-be46-4b46-9227-98a40c3fe006")
+print(status_ret)
+
 
 # This sql Datbase manages user login info, perhaps use bcrypt or such later for more secure storage
 def init_db():
@@ -51,7 +67,7 @@ def home_page():
         
         # if we click the button, let's construct the prompt for the LLM.
         if submit_button:
-            prompt = f"Given the patient’s demographic information and relevant medical history, please suggest a supplement regimen that could be used to increase the health longevity of the patient.\n\n" \
+            prompt = f"Given the patient’s demographic information and relevant medical history, please suggest the 5 most promising molecules that could be used to increase the health longevity of the patient.\n\n" \
                      f"Age: {age}\n" \
                      f"Sex: {sex}\n" \
                      f"Height: {feet}'{inches}\" (or {height_cm} cm)\n" \
@@ -62,7 +78,49 @@ def home_page():
             st.write("Constructed Prompt for LLM:")
             st.write(prompt)
 
-            # TODO: actually pass this into the LLM API to query the LLM
+            assert status_ret.get("status") == "live", "Please wait until status is live!"
+
+            service_client  = mclient(api_key = status_ret.get("api_auth_token"), base_url = status_ret.get("URL"))
+
+            payload = {
+                "input_variables": {"system": "You are a medical assistant",
+                    "prompt": prompt},
+                "stream": False,
+                "temperature": 0.6,
+                "max_tokens": 512
+            }
+
+            output = service_client.generate(model = "deploy-llm", data = payload)
+
+            if payload.get("stream"):
+                for i in output:
+                    print(i[0])
+            else:
+                print(json.loads(output)['text'][0])
+
+            # # TODO: actually pass this into the LLM API to query the LLM
+            # tokenizer = AutoTokenizer.from_pretrained("ayushnoori/alive")
+            # model = AutoModelWithHeads.from_pretrained("ayushnoori/alive")
+            # # model = AutoModelForSeq2SeqLM.from_pretrained("ayushnoori/alive")
+            
+            # st.write("LLM Response:")
+            # for i, output in enumerate(outputs):
+            #     line = tokenizer.decode(output, skip_special_tokens=True)
+            #     st.write(f"Option {i+1}: {line}")
+
+            # model_name = "ayushnoori/alive"
+            # tokenizer = AutoTokenizer.from_pretrained(model_name)
+            # model = AutoModelForCausalLM.from_pretrained(model_name)
+
+            # input_ids = tokenizer(prompt, return_tensors="pt").input_ids
+            # output_sequences = model.generate(input_ids, max_length=250, num_return_sequences=5, temperature=0.7)
+
+            # # Decode and display the generated sequences
+            # for i, generated_sequence in enumerate(output_sequences):
+            #     text = tokenizer.decode(generated_sequence, skip_special_tokens=True)
+            #     st.write(f"## Suggestion {i+1}")
+            #     st.write(text)
+
 
 def another_page():
     st.title("Therapeutic Explorer")

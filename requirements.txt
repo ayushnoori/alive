@@ -3,3 +3,7 @@ pandas
 numpy
 streamlit-authenticator
 sqlite3
+transformers
+torch
+monsterapi==1.0.2b3
+load_dotenv
