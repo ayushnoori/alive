@@ -22,11 +22,20 @@ You are an expert drug development scientist and biomedical researcher studying 
 ###Response: The average lifespan change will be {avg_lifespan_change} years.
 ```
 
+### Training Results 📈
+
 Training results are available via Weights & Biases at [this dashboard](https://api.wandb.ai/links/ayushnoori/9xquz6sq).
+
+
+### HuggingFace Release 🤗
+
+Our fine-tuned large language model was released publicly with a detailed model card at the following HuggingFace link: [ayushnoori/alive](https://huggingface.co/ayushnoori/alive).
+
 
 ## Future Directions 🚀
 
-TBD
+In the future, we intend to use a deep learning model trained by jointly learning molecular structures and textual descriptions to improve the quality and accuracy of our recommendations. For example, we could use MoleculeSTM, a multi-modal molecule structure–text model trained on over 280,000 chemical structure–text pairs. For more details, please see the associated paper in *Nature Machine Intelligence*:
+> Liu, S. et al. Multi-modal molecule structure–text model for text-based retrieval and editing. *Nat Mach Intell* **5**, 1447–1457 (2023). doi: [10.1038/s42256-023-00759-6](https://doi.org/10.1038/s42256-023-00759-6)
 
 ## Base Dependencies 📦 
 
