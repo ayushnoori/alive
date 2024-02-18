@@ -1,7 +1,7 @@
 import streamlit as st
 import sqlite3
 # from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, AutoModelWithHeads
-from transformers import AutoTokenizer, AutoModelForCausalLM
+# from transformers import AutoTokenizer, AutoModelForCausalLM
 import os
 from dotenv import load_dotenv
 from monsterapi import client as mclient
@@ -13,7 +13,7 @@ api_key = os.getenv('API_KEY')
 # print(api_key)
 
 deploy_client = mclient(api_key = api_key)
-status_ret = deploy_client.get_deployment_status("ac86ae4b-be46-4b46-9227-98a40c3fe006")
+status_ret = deploy_client.get_deployment_status("4bca7fc3-bcee-4165-ad87-a1e233b92d16")
 print(status_ret)
 
 
@@ -68,7 +68,7 @@ def home_page():
         # if we click the button, let's construct the prompt for the LLM.
         if submit_button:
 
-            system_prompt = "You are an expert drug development scientist and biomedical researcher studying drugs that can promote longevity and extend healthspan. You must answer an important question. Generate a response that answers this question."
+            system_prompt = "You are an expert drug development scientist and biomedical researcher studying drugs that can promote longevity and extend healthspan. You must answer an important question. Generate a response that answers this question. "
 
             prompt = f"###Question: I am a {age} year old {sex.lower()} with a height of {feet}'{inches}\" ({height_cm} cm) and a weight of {weight_lbs} lbs ({weight_kg} kg). I have the following pre-existing health conditions: {pre_existing_conditions}. I am currently taking the following medications: {current_medications}. Given my demographic information and relevant medical history, please suggest the 5 most promising small molecule drugs that could be used to improve my longevity and increase my healthspan.\n\n###Response:"
             
@@ -89,11 +89,18 @@ def home_page():
 
             output = service_client.generate(model = "deploy-llm", data = payload)
 
+            # if payload.get("stream"):
+            #     for i in output:
+            #         print(i[0])
+            # else:
+            #     print(json.loads(output)['text'][0])
+
             if payload.get("stream"):
                 for i in output:
-                    print(i[0])
+                    st.text(i[0])  # Using st.text() for simple text output
             else:
-                print(json.loads(output)['text'][0])
+                response_text = json.loads(output)['text'][0]
+                st.markdown(response_text)
 
             # # TODO: actually pass this into the LLM API to query the LLM
             # tokenizer = AutoTokenizer.from_pretrained("ayushnoori/alive")
@@ -177,10 +184,10 @@ def main():
         
         # Navigation side bar
         # TODO: we need to expand on these to build actual functionalities later with the LLM and molecule explorer
-        page = st.sidebar.radio("Go to", ['Home', 'Another Page'], index=0)
+        page = st.sidebar.radio("Go to", ['Home', 'Therapeutic Explorer'], index=0)
         if page == 'Home':
             home_page()
-        elif page == 'Another Page':
+        elif page == 'Therapeutic Explorer':
             another_page()
     else:
         option = st.sidebar.selectbox("Login or Register", ["Login", "Register"], index=0)
