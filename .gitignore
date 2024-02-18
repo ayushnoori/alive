@@ -5,10 +5,10 @@
 .DS_Store
 */.DS_Store
 
-# ignore Python cache
+# Ignore Python cache
 __pycache__
 .ipynb_checkpoints
 
-
+# Ignore virtual environment and secrets
 myvenv/
 .env

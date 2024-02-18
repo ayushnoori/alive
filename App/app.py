@@ -59,7 +59,7 @@ def home_page():
         inches = st.slider("Height (inches)", min_value=0, max_value=11, step=1)
         total_inches = feet * 12 + inches
         height_cm = round(total_inches * 2.54, 2)
-        weight_lbs = st.number_input("Weight (in pounds)", min_value=0.0, format="%.2f")
+        weight_lbs = st.number_input("Weight (pounds)", min_value=0.0, format="%.2f")
         weight_kg = round(weight_lbs / 2.205, 2)
         pre_existing_conditions = st.text_area("Pre-existing health conditions")
         current_medications = st.text_area("Current medications")
@@ -67,23 +67,20 @@ def home_page():
         
         # if we click the button, let's construct the prompt for the LLM.
         if submit_button:
-            prompt = f"Given the patient’s demographic information and relevant medical history, please suggest the 5 most promising molecules that could be used to increase the health longevity of the patient.\n\n" \
-                     f"Age: {age}\n" \
-                     f"Sex: {sex}\n" \
-                     f"Height: {feet}'{inches}\" (or {height_cm} cm)\n" \
-                     f"Weight: {weight_lbs} lbs (or {weight_kg} kg)\n" \
-                     f"Pre-existing conditions: {pre_existing_conditions}\n" \
-                     f"Current medications: {current_medications}"
+
+            system_prompt = "You are an expert drug development scientist and biomedical researcher studying drugs that can promote longevity and extend healthspan. You must answer an important question. Generate a response that answers this question."
+
+            prompt = f"###Question: I am a {age} year old {sex.lower()} with a height of {feet}'{inches}\" ({height_cm} cm) and a weight of {weight_lbs} lbs ({weight_kg} kg). I have the following pre-existing health conditions: {pre_existing_conditions}. I am currently taking the following medications: {current_medications}. Given my demographic information and relevant medical history, please suggest the 5 most promising small molecule drugs that could be used to improve my longevity and increase my healthspan.\n\n###Response:"
             
-            st.write("Constructed Prompt for LLM:")
+            st.write("Constructed prompt for LLM:")
             st.write(prompt)
 
             assert status_ret.get("status") == "live", "Please wait until status is live!"
 
-            service_client  = mclient(api_key = status_ret.get("api_auth_token"), base_url = status_ret.get("URL"))
+            service_client = mclient(api_key = status_ret.get("api_auth_token"), base_url = status_ret.get("URL"))
 
             payload = {
-                "input_variables": {"system": "You are a medical assistant",
+                "input_variables": {"system": system_prompt,
                     "prompt": prompt},
                 "stream": False,
                 "temperature": 0.6,
