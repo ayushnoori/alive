@@ -31,11 +31,38 @@ def verify_credentials(username, password):
 
 
 def home_page():
-    st.title("ALIVE")
-    st.write("Welcome to your personalized health dashboard.")
+    st.markdown("""
+    ## Welcome to ALIVE Health Dashboard
+    Welcome to your personalized health dashboard. Here's where we start our journey towards better health together.
+    """, unsafe_allow_html=True)
     
-    # TODO: have the home page be the llm page
+    with st.form("patient_info", clear_on_submit=False):
+        age = st.number_input("Age", min_value=0, max_value=120, step=1)
+        sex = st.selectbox("Sex", ["Male", "Female", "Other"])
+        feet = st.slider("Height (feet)", min_value=0, max_value=7, step=1)
+        inches = st.slider("Height (inches)", min_value=0, max_value=11, step=1)
+        total_inches = feet * 12 + inches
+        height_cm = round(total_inches * 2.54, 2)
+        weight_lbs = st.number_input("Weight (in pounds)", min_value=0.0, format="%.2f")
+        weight_kg = round(weight_lbs / 2.205, 2)
+        pre_existing_conditions = st.text_area("Pre-existing health conditions")
+        current_medications = st.text_area("Current medications")
+        submit_button = st.form_submit_button("Submit")
+        
+        # if we click the button, let's construct the prompt for the LLM.
+        if submit_button:
+            prompt = f"Given the patient’s demographic information and relevant medical history, please suggest a supplement regimen that could be used to increase the health longevity of the patient.\n\n" \
+                     f"Age: {age}\n" \
+                     f"Sex: {sex}\n" \
+                     f"Height: {feet}'{inches}\" (or {height_cm} cm)\n" \
+                     f"Weight: {weight_lbs} lbs (or {weight_kg} kg)\n" \
+                     f"Pre-existing conditions: {pre_existing_conditions}\n" \
+                     f"Current medications: {current_medications}"
+            
+            st.write("Constructed Prompt for LLM:")
+            st.write(prompt)
 
+            # TODO: actually pass this into the LLM API to query the LLM
 
 def another_page():
     st.title("Therapeutic Explorer")
@@ -78,6 +105,15 @@ def logout_user():
 
 def main():
     init_db()
+
+    st.set_page_config(
+        page_title="ALIVE Health Dashboard",
+        page_icon=":heart:",
+        layout="wide",
+        initial_sidebar_state="expanded",
+    )
+
+
     st.sidebar.title("Navigation")
     if st.session_state.get('authenticated'):
         # maybe have more buttons on the sidebar?
